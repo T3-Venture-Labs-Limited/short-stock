@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+/*
+  Type: three libre faces from the Velvetyne foundry (SIL OFL, files in ./fonts).
+  Le Murmure for titles and numbers, Compagnon (a typewriter) for the script,
+  Karrik for everything else. Archivo Black only previews burned-in captions.
+*/
+@font-face {
+  font-family: "Le Murmure";
+  src: url("./fonts/LeMurmure-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Compagnon";
+  src: url("./fonts/Compagnon-Roman.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Compagnon";
+  src: url("./fonts/Compagnon-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Compagnon";
+  src: url("./fonts/Compagnon-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Karrik";
+  src: url("./fonts/Karrik-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Karrik";
+  src: url("./fonts/Karrik-Italic.woff2") format("woff2");
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Archivo Black";
+  src: url("./ArchivoBlack-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+/*
+  Colour: a velvet screening room, and the coloured paper film scripts are printed on
+  when they are revised (blue, pink, yellow, green, goldenrod, salmon, buff, tan).
+  Every shot takes one of those colours, everywhere it appears.
+*/
+@theme {
+  --color-night: #1a0910;
+  --color-booth: #230e17;
+  --color-panel: #2c131f;
+  --color-panel-up: #391a29;
+  --color-seam: rgb(255 210 222 / 0.1);
+  --color-seam-up: rgb(255 210 222 / 0.2);
+  --color-bone: #f8eee4;
+  --color-dust: #d9bfba;
+  --color-smoke: #a08188;
+  --color-ink: #24141b;
+
+  --color-rev-blue: #b9d3f0;
+  --color-rev-pink: #f6bacb;
+  --color-rev-yellow: #f4e18b;
+  --color-rev-green: #bce2b0;
+  --color-rev-gold: #efc264;
+  --color-rev-salmon: #f6a98f;
+  --color-rev-buff: #eedcbb;
+  --color-rev-tan: #d8b796;
+
+  --color-tungsten: #efc264;
+  --color-tungsten-hot: #f6d68e;
+  --color-tally: #ef4b62;
+  --color-go: #bce2b0;
+
+  --font-sans: "Karrik", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Le Murmure", "Karrik", sans-serif;
+  --font-script: "Compagnon", ui-monospace, "Courier New", monospace;
+  --font-caption: "Archivo Black", ui-sans-serif, sans-serif;
+  --ease-film: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  background: var(--color-night);
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-night text-bone font-sans antialiased;
+  font-size: 15px;
+  background-image:
+    radial-gradient(1100px 620px at 12% -12%, rgb(239 75 98 / 0.16), transparent 62%),
+    radial-gradient(900px 560px at 105% 8%, rgb(185 211 240 / 0.09), transparent 60%),
+    radial-gradient(800px 600px at 50% 120%, rgb(239 194 100 / 0.06), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Velvet pile: a soft vertical weave, plus a little film grain. */
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.012) 0 1px, transparent 1px 7px);
+}
+body::after {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 100;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  animation: grain 1s steps(4) infinite;
+}
+#root {
+  position: relative;
+  z-index: 1;
+}
+@keyframes grain {
+  25% { transform: translate(-3%, 2%); }
+  50% { transform: translate(2%, -3%); }
+  75% { transform: translate(-1%, 3%); }
+}
+
+::selection {
+  background: var(--color-rev-pink);
+  color: var(--color-ink);
+}
+
+@layer base {
+  /* In the base layer so fields that draw their own focus (title, script) can opt out. */
+  :focus-visible {
+    outline: 2px solid var(--color-rev-pink);
+    outline-offset: 2px;
+  }
+}
+
+/*
+  Le Murmure's capitals rise 0.81em above the baseline; anything under a 1.08
+  line-height clips them inside fields and overflow-hidden boxes.
+*/
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.08;
+}
+
+/* The script: a white draft page, three-hole punched. */
+.sheet {
+  background: linear-gradient(175deg, #fbf7f0 0%, #f4eee3 45%, #ebe3d5 100%);
+  color: var(--color-ink);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.5) inset,
+    0 60px 110px -40px rgb(0 0 0 / 0.85),
+    0 0 140px -30px rgb(246 186 203 / 0.18);
+}
+.sheet-margin {
+  background: linear-gradient(90deg, transparent 63px, rgb(239 75 98 / 0.45) 63px, rgb(239 75 98 / 0.45) 64px, transparent 64px);
+}
+.sheet-holes {
+  --hole: radial-gradient(circle at 50% 50%, #1a0910 0 7px, rgb(26 9 16 / 0.25) 7.5px, transparent 8.5px);
+  background-image: var(--hole), var(--hole), var(--hole);
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 22px 12%, 22px 50%, 22px 88%;
+}
+
+/* Highlighter marks behind the script, one colour per shot. */
+.mirror mark {
+  color: transparent;
+  border-radius: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 1px 0;
+}
+
+/* The storyboard: a strip of 35mm film. */
+.film {
+  position: relative;
+  background: #110509;
+  border-radius: 8px;
+  padding: 0 36px;
+  box-shadow: 0 40px 90px -40px rgb(0 0 0 / 0.95), 0 0 0 1px rgb(255 210 222 / 0.06) inset;
+}
+.film::before,
+.film::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  -webkit-mask: repeating-linear-gradient(180deg, #000 0 10px, transparent 10px 22px);
+  mask: repeating-linear-gradient(180deg, #000 0 10px, transparent 10px 22px);
+  background-color: rgb(248 238 228 / 0.12);
+  border-radius: 2px;
+}
+.film::before { left: 11px; }
+.film::after { right: 11px; }
+
+.edge-code {
+  position: absolute;
+  top: 50%;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+  font-family: var(--font-script);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.develop {
+  animation: develop 0.9s var(--ease-film) both;
+}
+@keyframes develop {
+  from {
+    opacity: 0;
+    filter: sepia(1) hue-rotate(-20deg) brightness(0.3) blur(3px);
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.8s var(--ease-film) both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+.tally {
+  background: var(--color-tally);
+  box-shadow: 0 0 0 3px rgb(239 75 98 / 0.2), 0 0 18px rgb(239 75 98 / 0.8);
+  animation: tally 1.4s ease-in-out infinite;
+}
+@keyframes tally {
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 3px rgb(239 75 98 / 0.05), 0 0 6px rgb(239 75 98 / 0.4);
+  }
+}
+
+/* Film running through the gate, its frames in revision colours. */
+.gate {
+  background-image: linear-gradient(90deg, var(--color-rev-blue), var(--color-rev-pink), var(--color-rev-yellow), var(--color-rev-green), var(--color-rev-gold), var(--color-rev-salmon), var(--color-rev-blue));
+  background-size: 200% 100%;
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 22px, transparent 22px 26px);
+  mask: repeating-linear-gradient(90deg, #000 0 22px, transparent 22px 26px);
+  animation: advance 2.4s linear infinite;
+}
+@keyframes advance {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.projector {
+  background: radial-gradient(55% 60% at 50% 42%, rgb(246 186 203 / 0.16), transparent 70%);
+}
+
+.glass {
+  background: rgb(36 13 23 / 0.74);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 0 0 1px rgb(255 210 222 / 0.12) inset,
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 30px 60px -20px rgb(0 0 0 / 0.85);
+}
+
+.glass.pop {
+  background: rgb(42 16 27 / 0.97);
+}
+
+.credits {
+  -webkit-mask: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+  mask: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+.credits-roll {
+  animation: roll 28s linear infinite;
+}
+.credits:hover .credits-roll {
+  animation-play-state: paused;
+}
+@keyframes roll {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+input[type="range"] {
+  accent-color: var(--color-rev-pink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after,
+  .develop,
+  .rise,
+  .tally,
+  .gate,
+  .credits-roll {
+    animation: none !important;
+  }
+}

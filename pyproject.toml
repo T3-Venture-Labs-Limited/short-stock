@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "shortstock"
+version = "0.1.0"
+description = "Free, open-source faceless video generator: turn a script into a narrated stock-footage video for TikTok, Reels, YouTube Shorts or YouTube, with ElevenLabs or Fish Audio voices, Pexels footage and animated captions."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+keywords = [
+  "faceless-video", "text-to-video", "script-to-video", "youtube-shorts", "tiktok", "instagram-reels",
+  "stock-footage", "pexels", "elevenlabs", "fish-audio", "text-to-speech", "auto-captions", "ffmpeg",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Video",
+  "Environment :: Web Environment",
+]
+dependencies = [
+  "boto3>=1.35",
+  "fastapi>=0.115,<1",
+  "httpx>=0.28,<1",
+  "pydantic>=2.10,<3",
+  "python-multipart>=0.0.12",
+  "uvicorn[standard]>=0.34,<1",
+]
+
+[project.urls]
+Homepage = "https://github.com/T3-Venture-Labs-Limited/short-stock"
+Issues = "https://github.com/T3-Venture-Labs-Limited/short-stock/issues"
+
+[project.scripts]
+shortstock = "shortstock.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.11",
+]
+
+[tool.hatch.build]
+# The built web UI is gitignored but must ship in the wheel.
+artifacts = ["src/shortstock/web/"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shortstock"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]

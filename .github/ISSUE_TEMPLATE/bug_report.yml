@@ -1,0 +1,37 @@
+name: Bug report
+description: Something does not work as expected.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Paste this script…
+        2. Choose Fish Audio and 16:9…
+        3. Click Record video…
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `shortstock doctor --json`
+      description: Remove any keys before pasting.
+      render: json
+  - type: input
+    id: setup
+    attributes:
+      label: Setup
+      placeholder: "Docker / from source, OS, browser, voice provider"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error message or logs
+      render: text

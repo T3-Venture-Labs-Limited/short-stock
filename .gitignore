@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Frontend
+frontend/node_modules/
+src/shortstock/web/
+
+# Local data
+.shortstock/
+data/
+*.db
+.env
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+*.tsbuildinfo

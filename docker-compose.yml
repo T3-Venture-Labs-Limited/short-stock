@@ -1,0 +1,16 @@
+services:
+  shortstock:
+    build: .
+    image: shortstock
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      # Optional: keys can also be added in the web UI under Settings.
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY:-}
+      - FISH_API_KEY=${FISH_API_KEY:-}
+      - PEXELS_API_KEY=${PEXELS_API_KEY:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      - BUFFER_API_KEY=${BUFFER_API_KEY:-}
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+# shortstock
+
+> shortstock is a free, open-source faceless video generator. It turns a written script into a narrated stock-footage video for TikTok, Instagram Reels, YouTube Shorts or YouTube. It voices the script with ElevenLabs or Fish Audio (with word timestamps), finds matching Pexels footage for every sentence, cuts shots on the words, adds animated captions and optional ducked music, and renders with ffmpeg. It has a web app and a JSON CLI for AI agents. MIT licensed, self-hosted, bring your own keys.
+
+## Docs
+
+- [README](README.md): features, installation (Docker or uv), script syntax, CLI usage, settings, FAQ
+- [Agent skill](skills/shortstock/SKILL.md): how an AI agent should run shortstock
+- [AGENTS.md](AGENTS.md): codebase map
+
+## Key facts
+
+- Input: a script in plain text or Markdown; `[visual: ...]` hints choose footage per sentence and `[clip: id]` locks a Pexels clip
+- Web app: script editor with a live storyboard showing Pexels clips for every sentence before recording
+- Output: one MP4 (9:16, 4:5, 1:1 or 16:9) with captions, plus Pexels credits
+- Voices: ElevenLabs or Fish Audio; footage: Pexels; optional OpenRouter LLM for footage searches
+- Requirements: Python 3.11+, ffmpeg, Node 22+ to build the UI; or Docker
