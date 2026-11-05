@@ -88,7 +88,7 @@ shortstock runs on Apple Silicon and Intel Macs. Install the tools with [Homebre
 brew install ffmpeg-full uv node
 ```
 
-- **Use `ffmpeg-full`, not `ffmpeg`.** Homebrew's standard `ffmpeg` is built without libass, so it can't draw captions. `ffmpeg-full` can. Homebrew doesn't put it on your PATH, but shortstock finds it automatically. `uv run shortstock doctor` shows which ffmpeg is used, and `SHORTSTOCK_FFMPEG` points it at another one.
+- **Use `ffmpeg-full`, not `ffmpeg`.** Homebrew's standard `ffmpeg` is built without libass, so it can't draw captions. `ffmpeg-full` can. If you already have Homebrew's `ffmpeg`, `ffmpeg-full` is installed beside it rather than replacing it; shortstock finds it either way. `uv run shortstock doctor` shows which ffmpeg is used, and `SHORTSTOCK_FFMPEG` points it at another one.
 - **Docker** works too, with Docker Desktop on both Apple Silicon and Intel.
 
 ## The storyboard

@@ -15,7 +15,8 @@ from pathlib import Path
 
 OVERRIDE_ENV = "SHORTSTOCK_FFMPEG"
 # Homebrew's standard ffmpeg is built without libass, so it cannot draw captions. Its
-# ffmpeg-full formula can, but is "keg-only": installed here, not on the PATH.
+# ffmpeg-full formula can. When the standard ffmpeg is installed too, ffmpeg-full is
+# "keg-only": it sits in its own folder below, off the PATH.
 HOMEBREW_DIRS = ("/opt/homebrew/opt/ffmpeg-full/bin", "/usr/local/opt/ffmpeg-full/bin")
 
 

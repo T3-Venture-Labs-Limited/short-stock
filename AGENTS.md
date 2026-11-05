@@ -24,4 +24,4 @@ Use the CLI with `--json`. Start with `shortstock doctor --json`, then `shortsto
 - Keep modules small and dependencies few.
 - Never commit API keys or files from `SHORTSTOCK_HOME`.
 
-Never call `ffmpeg` or `ffprobe` by name: use `media.ffmpeg_bin()` / `media.ffprobe_bin()`. On macOS the ffmpeg that can draw captions is Homebrew's keg-only `ffmpeg-full`, which is not on the PATH.
+Never call `ffmpeg` or `ffprobe` by name: use `media.ffmpeg_bin()` / `media.ffprobe_bin()`. On macOS the ffmpeg that can draw captions is Homebrew's `ffmpeg-full`, which is off the PATH when the standard `ffmpeg` is also installed.
