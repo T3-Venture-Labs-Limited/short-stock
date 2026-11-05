@@ -9,12 +9,32 @@ jobs:
   backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@v6
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg
       - run: uv sync --python 3.12
       - run: uv run ruff check src tests
       - run: uv run ruff format --check src tests
+      - run: uv run pytest -q
+
+  # Macs. Homebrew's standard ffmpeg has no libass. Installing it first reproduces the
+  # common case: ffmpeg-full then sits beside it, off the PATH, and shortstock must find it.
+  macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-latest, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+      - run: brew install ffmpeg && brew install ffmpeg-full
+      - run: uv sync --python 3.12
+      - run: uv run shortstock doctor || true  # voice and footage keys are not set in CI
+      - run: uv run python -c "from shortstock.media import find_ffmpeg as f; r = f(); print(r); assert r.libass and 'ffmpeg-full' in r.ffmpeg"
       - run: uv run pytest -q
 
   frontend:
@@ -23,8 +43,8 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
