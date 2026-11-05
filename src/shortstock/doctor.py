@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import shutil
-import subprocess
-
 from shortstock.config import get_setting
+from shortstock.media import find_ffmpeg, install_hint
 from shortstock.publish import storage_configured
 
 LABELS = {
@@ -20,13 +18,8 @@ LABELS = {
 
 
 def checks() -> list[dict]:
-    ffmpeg = shutil.which("ffmpeg")
-    libass = False
-    if ffmpeg:
-        filters = subprocess.run(
-            [ffmpeg, "-hide_banner", "-filters"], capture_output=True, text=True, check=False
-        )
-        libass = " ass " in filters.stdout
+    found = find_ffmpeg()
+    ffmpeg, libass = found.ffmpeg, found.libass
     provider = get_setting("tts_provider") or "elevenlabs"
     voice_key = get_setting(f"{provider}_api_key")
     voice_id = get_setting(f"{provider}_voice_id")
@@ -42,15 +35,17 @@ def checks() -> list[dict]:
     return [
         _check(
             "ffmpeg",
-            bool(ffmpeg and shutil.which("ffprobe")),
+            bool(ffmpeg and found.ffprobe),
             True,
-            "found" if ffmpeg else "install ffmpeg and make sure it is on PATH",
+            ffmpeg if ffmpeg and found.ffprobe else f"ffmpeg and ffprobe not found. {install_hint()}",
         ),
         _check(
             "captions",
             libass,
             True,
-            "ffmpeg has libass" if libass else "your ffmpeg build lacks libass; captions will fail",
+            "ffmpeg has libass"
+            if libass
+            else f"this ffmpeg can't draw captions (it has no libass). {install_hint()}",
         ),
         _check("voice", bool(voice_key and voice_id), True, voice_detail),
         _check("footage", pexels, True, "Pexels key set" if pexels else "add a free Pexels API key"),

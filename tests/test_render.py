@@ -1,15 +1,13 @@
 """Render with synthetic stock clips, voice and music (ffmpeg only, no network)."""
 
-import shutil
-
 import pytest
 
-from shortstock.media import probe, run_ffmpeg
+from shortstock.media import find_ffmpeg, probe, run_ffmpeg
 from shortstock.plan import align_sentences, build_shots, write_queries
 from shortstock.render import render_video
 from shortstock.script import parse_script
 
-pytestmark = pytest.mark.skipif(not shutil.which("ffmpeg"), reason="needs ffmpeg")
+pytestmark = pytest.mark.skipif(not find_ffmpeg().ffmpeg, reason="needs ffmpeg")
 
 
 @pytest.mark.parametrize("aspect,size,music", [("9:16", (1080, 1920), False), ("16:9", (1920, 1080), True)])

@@ -68,7 +68,7 @@ Open http://localhost:8000, add your keys under **Settings**, paste a script and
 
 ### From source
 
-Requires Python 3.11+, Node 22+, [uv](https://docs.astral.sh/uv/) and ffmpeg (with libass, which most builds include).
+Requires Python 3.11+, Node 22+, [uv](https://docs.astral.sh/uv/) and ffmpeg with libass (Linux distribution packages include it; on a Mac see [below](#macos)).
 
 ```bash
 git clone https://github.com/T3-Venture-Labs-Limited/short-stock
@@ -79,6 +79,17 @@ uv run shortstock serve
 ```
 
 Run `uv run shortstock doctor` to check your setup.
+
+### macOS
+
+shortstock runs on Apple Silicon and Intel Macs. Install the tools with [Homebrew](https://brew.sh), then follow the steps above:
+
+```bash
+brew install ffmpeg-full uv node
+```
+
+- **Use `ffmpeg-full`, not `ffmpeg`.** Homebrew's standard `ffmpeg` is built without libass, so it can't draw captions. `ffmpeg-full` can. Homebrew doesn't put it on your PATH, but shortstock finds it automatically. `uv run shortstock doctor` shows which ffmpeg is used, and `SHORTSTOCK_FFMPEG` points it at another one.
+- **Docker** works too, with Docker Desktop on both Apple Silicon and Intel.
 
 ## The storyboard
 
@@ -190,6 +201,9 @@ Both work and both return word timings. ElevenLabs has a large voice library and
 
 **Can I use the footage commercially?**
 Pexels videos are free to use under the [Pexels licence](https://www.pexels.com/license/). shortstock saves the photographer credits for every video.
+
+**Does it work on a Mac?**
+Yes, on Apple Silicon and Intel. Install `ffmpeg-full` from Homebrew rather than `ffmpeg`; see [macOS](#macos).
 
 **Which languages are supported?**
 Any language your voice provider supports. Captions follow the spoken words. Footage searches work best in English, so use English `[visual: …]` hints for other languages.
